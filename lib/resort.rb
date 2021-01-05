@@ -1,2 +1,0 @@
-class Resort 
-end
