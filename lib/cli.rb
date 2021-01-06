@@ -1,6 +1,8 @@
 require 'tty-prompt'
 require 'rest-client'
 require 'json'
+require 'date'
+
 #ef6b7de36c8aed58b9210b1226e7bc4d
 #api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 ActiveRecord::Base.logger = nil
@@ -34,7 +36,6 @@ class Cli
       weather @resort_name
     else
       puts "Too bad"
-      welcome()
     end
   end
 
@@ -53,8 +54,8 @@ class Cli
   end
 
   def current_weather weather
-    puts "The current weather for #{@resort_name} is:"
-    puts "Temperature: #{weather["current"]["temp"]} \xC2\xB0 F"
+    puts "The current weather for #{@resort_name} is:
+    puts "Average Temperature: #{weather["current"]["temp"]}\xC2\xB0"
     puts "Conditions: #{weather["current"]["weather"][0]["main"]}"
     puts "Wind Speed: #{weather["current"]["wind_speed"]} mph"
   end
@@ -80,6 +81,26 @@ class Cli
       puts "Wind Speed: #{day["wind_speed"]} mph"
     end
   end
+
+end
+
+  def five_day_forecast weather
+    puts "The five day weather forecast for #{@resort_name} is:"
+    weather["daily"][1..5].each do |day|
+      puts "Day: #{dateTime("#{day["dt"]}")}"
+      puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0" 
+      puts "Low: #{day["temp"]["min"]}\xC2\xB0" 
+      puts "High: #{day["temp"]["max"]}\xC2\xB0" 
+      puts "Conditions: #{day["weather"][0]["main"]} "
+      if day["weather"][0]["main"] == "Snow"
+        puts "Amount of Fresh Pow: #{day["snow"]} inches"
+      end
+      puts "Wind Speed: #{day["wind_speed"]} mph"
+      puts "\n"
+    end
+  end
+
+
 
 end
 
