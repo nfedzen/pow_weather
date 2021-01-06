@@ -6,6 +6,7 @@ require 'date'
 #ef6b7de36c8aed58b9210b1226e7bc4d
 #api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 ActiveRecord::Base.logger = nil
+
 class Cli  
 
   def prompt
@@ -15,11 +16,19 @@ class Cli
   def pause
     puts "[Press Enter to Continue]"
     gets
+  end 
+
+  def clear 
+    system("clear")
+  end
+
+  def dateTime epoch
+    date_time = DateTime.strptime(epoch,'%s')
+    date_time.to_date
   end
 
   def welcome
-    system('clear')
-    
+    clear
     puts "Welcome to the Ski Resort Weather app!"
     ask = prompt.yes?("Would you like to select a resort?")
     if ask
@@ -40,45 +49,41 @@ class Cli
     long = chosen_resort[:long]
     weather = JSON.parse(RestClient.get("https://api.openweathermap.org/data/2.5/onecall?lat=#{lat}&lon=#{long}&units=imperial&appid=ef6b7de36c8aed58b9210b1226e7bc4d"))
     current_weather weather
+    
     pause
   end
 
   def current_weather weather
-    puts "Current Weather:"
+    puts "The current weather for #{@resort_name} is:
     puts "Average Temperature: #{weather["current"]["temp"]}\xC2\xB0"
     puts "Conditions: #{weather["current"]["weather"][0]["main"]}"
     puts "Wind Speed: #{weather["current"]["wind_speed"]} mph"
   end
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  def three_day_forecast weather
+    weather["daily"][1..3].each do |day|
+      puts "Day: #{dateTime("#{day["dt"]}")}"
+      puts "Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
+      puts "Temperature minimum: #{day["temp"]["min"]}\xC2\xB0 F" 
+      puts "Temperature maximum: #{day["temp"]["max"]}\xC2\xB0 F"
+      puts "Conditions: #{day["weather"][0]["main"]}"
+      puts "Wind Speed: #{day["wind_speed"]} mph"
+    end
+  end
+
+  def seven_day_forecast weather
+    weather["daily"][1..7].each do |day|
+      puts "Day: #{dateTime("#{day["dt"]}")}"
+      puts "Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
+      puts "Temperature minimum: #{day["temp"]["min"]}\xC2\xB0 F" 
+      puts "Temperature maximum: #{day["temp"]["max"]}\xC2\xB0 F"
+      puts "Conditions: #{day["weather"][0]["main"]}"
+      puts "Wind Speed: #{day["wind_speed"]} mph"
+    end
+  end
+
+end
+
   def five_day_forecast weather
     puts "The five day weather forecast for #{@resort_name} is:"
     weather["daily"][1..5].each do |day|
@@ -98,3 +103,4 @@ class Cli
 
 
 end
+
