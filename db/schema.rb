@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_05_224647) do
+ActiveRecord::Schema.define(version: 2021_01_06_163318) do
 
   create_table "resorts", force: :cascade do |t|
     t.string "name"
-    t.float "current_temp"
-    t.string "conditions"
+    t.float "lat"
+    t.float "long"
   end
 
 end
