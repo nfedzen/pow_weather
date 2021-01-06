@@ -27,6 +27,19 @@ class Cli
     date_time.to_date
   end
 
+  def options resort_name
+    chosen_option = prompt.select("Which weather forecast would you like?", ["Current weather", "3 Day Forecast", "5 Day Forecast", "7 Day Forecast"])
+    if chosen_option == "Current weather"
+      current_weather @weather
+    elsif chosen_option == "3 Day Forecast"
+      three_day_forecast @weather
+    elsif chosen_option == "5 Day Forecast"
+      five_day_forecast @weather 
+    else  
+      seven_day_forecast @weather 
+    end
+  end
+
   def welcome
     clear
     puts "Welcome to the Ski Resort Weather app!"
@@ -47,14 +60,14 @@ class Cli
     chosen_resort = Resort.all.find_by name: @resort_name
     lat = chosen_resort[:lat]
     long = chosen_resort[:long]
-    weather = JSON.parse(RestClient.get("https://api.openweathermap.org/data/2.5/onecall?lat=#{lat}&lon=#{long}&units=imperial&appid=ef6b7de36c8aed58b9210b1226e7bc4d"))
-    current_weather weather
+    @weather = JSON.parse(RestClient.get("https://api.openweathermap.org/data/2.5/onecall?lat=#{lat}&lon=#{long}&units=imperial&appid=ef6b7de36c8aed58b9210b1226e7bc4d"))
+     options resort_name
     
-    pause
+    #pause
   end
 
   def current_weather weather
-    puts "The current weather for #{@resort_name} is:
+    puts "The current weather for #{@resort_name} is:"
     puts "Average Temperature: #{weather["current"]["temp"]}\xC2\xB0"
     puts "Conditions: #{weather["current"]["weather"][0]["main"]}"
     puts "Wind Speed: #{weather["current"]["wind_speed"]} mph"
@@ -82,7 +95,6 @@ class Cli
     end
   end
 
-end
 
   def five_day_forecast weather
     puts "The five day weather forecast for #{@resort_name} is:"
