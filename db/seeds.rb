@@ -3,3 +3,4 @@ Resort.create ({name: "Keystone", lat: 39.5792, long: -105.9347})
 Resort.create ({name: "Vail", lat: 39.6403, long: -106.3742})
 Resort.create ({name: "Crested Butte", lat: 38.8697, long: -106.9878})
 Resort.create ({name: "Beaver Creek", lat: 39.6042, long: -106.5165})
+
