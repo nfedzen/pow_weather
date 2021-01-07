@@ -28,7 +28,7 @@ class Cli
   end
 
   def options resort_name
-    chosen_option = prompt.select("Which weather forecast would you like?", ["Current weather", "3 Day Forecast", "5 Day Forecast", "7 Day Forecast"])
+    chosen_option = prompt.select("What do you want to see?", ["Current weather", "3 Day Forecast", "5 Day Forecast", "7 Day Forecast"])
     if chosen_option == "Current weather"
       current_weather @weather
     elsif chosen_option == "3 Day Forecast"
@@ -42,18 +42,19 @@ class Cli
 
   def welcome
     clear
-    puts "Welcome to the Ski Resort Weather app!"
-    ask = prompt.yes?("Would you like to select a resort?")
-    if ask
-      @resort_name = list_resorts
-      weather @resort_name
-    else
-      puts "Too bad"
-    end
+    puts "Wassup, welcome to Pow Weather!" 
+      ask = prompt.yes?("Wanna check the pow?")
+      if ask
+        @resort_name = list_resorts
+        weather @resort_name
+        options @resort_name
+      else
+        puts "Go get that fresh butter!"
+      end
   end
 
   def list_resorts
-    selected_resort = prompt.select("Select resorts", Resort.all.pluck(:name))
+    selected_resort = prompt.select("Where are you shreddin' the gnar?", Resort.all.pluck(:name))
   end
 
   def weather resort_name
@@ -61,7 +62,6 @@ class Cli
     lat = chosen_resort[:lat]
     long = chosen_resort[:long]
     @weather = JSON.parse(RestClient.get("https://api.openweathermap.org/data/2.5/onecall?lat=#{lat}&lon=#{long}&units=imperial&appid=ef6b7de36c8aed58b9210b1226e7bc4d"))
-    options resort_name
   end
 
   def current_weather weather
@@ -72,61 +72,10 @@ class Cli
     puts "Conditions: #{weather["current"]["weather"][0]["main"]}"
     puts "Wind Speed: #{weather["current"]["wind_speed"]} mph"
     puts "\n"
+    pause
+    welcome
   end
 
-  # def three_day_forecast weather
-  #   clear
-  #   puts "The three day weather forecast for #{@resort_name} is:"
-  #   puts "\n"
-  #   weather["daily"][1..3].each do |day|
-  #     puts "Day: #{dateTime("#{day["dt"]}")}"
-  #     puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
-  #     puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
-  #     puts "High: #{day["temp"]["max"]}\xC2\xB0 F"
-  #     puts "Conditions: #{day["weather"][0]["main"]}"
-  #     if day["weather"][0]["main"] == "Snow"
-  #       puts "Amount of Fresh Pow: #{day["snow"]} in"
-  #     end
-  #     puts "Wind Speed: #{day["wind_speed"]} mph"
-  #     puts "\n"
-  #   end
-  # end
-
-  # def five_day_forecast weather
-  #   clear
-  #   puts "The five day weather forecast for #{@resort_name} is:"
-  #   puts "\n"
-  #   weather["daily"][1..5].each do |day|
-  #     puts "Day: #{dateTime("#{day["dt"]}")}"
-  #     puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
-  #     puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
-  #     puts "High: #{day["temp"]["max"]}\xC2\xB0 F" 
-  #     puts "Conditions: #{day["weather"][0]["main"]} "
-  #     if day["weather"][0]["main"] == "Snow"
-  #       puts "Amount of Fresh Pow: #{day["snow"]} in"
-  #     end
-  #     puts "Wind Speed: #{day["wind_speed"]} mph"
-  #     puts "\n"
-  #   end
-  # end
-
-  # def seven_day_forecast weather
-  #   clear
-  #   puts "The seven day weather forecast for #{@resort_name} is:"
-  #   puts "\n"
-  #   weather["daily"][1..7].each do |day|
-  #     puts "Day: #{dateTime("#{day["dt"]}")}"
-  #     puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
-  #     puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
-  #     puts "High: #{day["temp"]["max"]}\xC2\xB0 F"
-  #     puts "Conditions: #{day["weather"][0]["main"]}"
-  #     if day["weather"][0]["main"] == "Snow"
-  #       puts "Amount of Fresh Pow: #{day["snow"]} in"
-  #     end
-  #     puts "Wind Speed: #{day["wind_speed"]} mph"
-  #     puts "\n"
-  #   end
-  # end
 
   def forecast days, weather
     clear
@@ -143,6 +92,8 @@ class Cli
       puts "Wind Speed: #{day["wind_speed"]} mph"
       puts "\n"
     end
+    pause
+    welcome
   end
 
 
