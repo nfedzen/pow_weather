@@ -1,3 +1,6 @@
+Resort.destroy_all
+User.destroy_all
+
 Resort.create ({name: "Breckenridge", lat: 39.4817, long: -106.0384})
 Resort.create ({name: "Keystone", lat: 39.5792, long: -105.9347})
 Resort.create ({name: "Vail", lat: 39.6403, long: -106.3742})
@@ -21,3 +24,4 @@ Resort.create ({name: "Telluride", lat: 37.9363, long: -107.8466})
 Resort.create ({name: "Winter Park", lat: 39.8868, long: -105.7625})
 Resort.create ({name: "Wolf Creek", lat: 37.4722, long: -106.7930})
 
+nate = User.create username: "ncrotes", password_string: "password", age: 32, location: "Denver", favorite_resort: "Breckenridge"
