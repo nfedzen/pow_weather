@@ -32,11 +32,11 @@ class Cli
     if chosen_option == "Current weather"
       current_weather @weather
     elsif chosen_option == "3 Day Forecast"
-      three_day_forecast @weather
+      forecast 3, @weather
     elsif chosen_option == "5 Day Forecast"
-      five_day_forecast @weather 
+      forecast 5, @weather 
     else  
-      seven_day_forecast @weather 
+      forecast 7, @weather 
     end
   end
 
@@ -74,11 +74,64 @@ class Cli
     puts "\n"
   end
 
-  def three_day_forecast weather
+  # def three_day_forecast weather
+  #   clear
+  #   puts "The three day weather forecast for #{@resort_name} is:"
+  #   puts "\n"
+  #   weather["daily"][1..3].each do |day|
+  #     puts "Day: #{dateTime("#{day["dt"]}")}"
+  #     puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
+  #     puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
+  #     puts "High: #{day["temp"]["max"]}\xC2\xB0 F"
+  #     puts "Conditions: #{day["weather"][0]["main"]}"
+  #     if day["weather"][0]["main"] == "Snow"
+  #       puts "Amount of Fresh Pow: #{day["snow"]} in"
+  #     end
+  #     puts "Wind Speed: #{day["wind_speed"]} mph"
+  #     puts "\n"
+  #   end
+  # end
+
+  # def five_day_forecast weather
+  #   clear
+  #   puts "The five day weather forecast for #{@resort_name} is:"
+  #   puts "\n"
+  #   weather["daily"][1..5].each do |day|
+  #     puts "Day: #{dateTime("#{day["dt"]}")}"
+  #     puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
+  #     puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
+  #     puts "High: #{day["temp"]["max"]}\xC2\xB0 F" 
+  #     puts "Conditions: #{day["weather"][0]["main"]} "
+  #     if day["weather"][0]["main"] == "Snow"
+  #       puts "Amount of Fresh Pow: #{day["snow"]} in"
+  #     end
+  #     puts "Wind Speed: #{day["wind_speed"]} mph"
+  #     puts "\n"
+  #   end
+  # end
+
+  # def seven_day_forecast weather
+  #   clear
+  #   puts "The seven day weather forecast for #{@resort_name} is:"
+  #   puts "\n"
+  #   weather["daily"][1..7].each do |day|
+  #     puts "Day: #{dateTime("#{day["dt"]}")}"
+  #     puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
+  #     puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
+  #     puts "High: #{day["temp"]["max"]}\xC2\xB0 F"
+  #     puts "Conditions: #{day["weather"][0]["main"]}"
+  #     if day["weather"][0]["main"] == "Snow"
+  #       puts "Amount of Fresh Pow: #{day["snow"]} in"
+  #     end
+  #     puts "Wind Speed: #{day["wind_speed"]} mph"
+  #     puts "\n"
+  #   end
+  # end
+
+  def forecast days, weather
     clear
-    puts "The three day weather forecast for #{@resort_name} is:"
-    puts "\n"
-    weather["daily"][1..3].each do |day|
+    puts "The #{days} day weather forecast for #{@resort_name} is:"
+    weather["daily"][1..days].each do |day|
       puts "Day: #{dateTime("#{day["dt"]}")}"
       puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
       puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
@@ -91,44 +144,6 @@ class Cli
       puts "\n"
     end
   end
-
-  def five_day_forecast weather
-    clear
-    puts "The five day weather forecast for #{@resort_name} is:"
-    puts "\n"
-    weather["daily"][1..5].each do |day|
-      puts "Day: #{dateTime("#{day["dt"]}")}"
-      puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
-      puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
-      puts "High: #{day["temp"]["max"]}\xC2\xB0 F" 
-      puts "Conditions: #{day["weather"][0]["main"]} "
-      if day["weather"][0]["main"] == "Snow"
-        puts "Amount of Fresh Pow: #{day["snow"]} in"
-      end
-      puts "Wind Speed: #{day["wind_speed"]} mph"
-      puts "\n"
-    end
-  end
-
-  def seven_day_forecast weather
-    clear
-    puts "The seven day weather forecast for #{@resort_name} is:"
-    puts "\n"
-    weather["daily"][1..7].each do |day|
-      puts "Day: #{dateTime("#{day["dt"]}")}"
-      puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
-      puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
-      puts "High: #{day["temp"]["max"]}\xC2\xB0 F"
-      puts "Conditions: #{day["weather"][0]["main"]}"
-      if day["weather"][0]["main"] == "Snow"
-        puts "Amount of Fresh Pow: #{day["snow"]} in"
-      end
-      puts "Wind Speed: #{day["wind_speed"]} mph"
-      puts "\n"
-    end
-  end
-
-
 
 
 
