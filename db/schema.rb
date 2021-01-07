@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_06_163318) do
+ActiveRecord::Schema.define(version: 2021_01_07_165157) do
 
   create_table "resorts", force: :cascade do |t|
     t.string "name"
     t.float "lat"
     t.float "long"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.string "password_string"
+    t.integer "age"
+    t.string "location"
+    t.string "favorite_resort"
   end
 
 end

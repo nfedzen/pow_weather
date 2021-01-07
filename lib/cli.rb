@@ -56,6 +56,10 @@ class Cli
   def list_resorts
     selected_resort = prompt.select("Where are you shreddin' the gnar?", Resort.all.pluck(:name))
   end
+  
+  def resort_listing 
+    Resort.all.pluck(:name)
+  end
 
   def weather resort_name
     chosen_resort = Resort.all.find_by name: @resort_name
@@ -98,5 +102,108 @@ class Cli
 
 
 
-end
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  def sign_in
+    clear
+    puts "Wassup, welcome to Pow Weather!" 
+    puts "Sign into the app"
+    username = prompt.ask("What is your username?")
+    password = prompt.mask("What is your password?") 
+    user_lookup = User.find_by(username: username)
+    if user_lookup 
+      
+        pass_lookup = User.find_by(password_string: password)
+          if pass_lookup
+            puts "Congratulations, you logged in!" 
+            puts "Welcome #{username}!"
+          else
+            puts "Incorrect Password, try again"
+            pause
+            password = prompt.mask("What is your password?")
+            pass_lookup = User.find_by(password_string: password)
+            if pass_lookup
+              puts "Congratulations, you logged in!" 
+            else 
+              puts "Incorrect Password, try signing in again"
+              pause
+              sign_in
+            end
+        end
+    else
+      puts "#{username} not found"
+      new_user = prompt.yes?("Would you like to create a user profile?")
+        if new_user
+          create_user_profile
+        else
+          puts "continue as guest"
+          pause
+        end
+    end
+  end
+
+  def create_user_profile
+    puts "What is your desired username?"
+      desired_username = gets.chomp
+      username_lookup = User.find_by(username: desired_username)
+      if username_lookup
+        puts "Sorry, that username is already taken, try again"
+          desired_username = gets.chomp
+          username_lookup = User.find_by(username: desired_username)
+      else
+        puts "Welcome #{desired_username}"
+      end
+    desired_password = prompt.mask("Now lets create your password:")
+    puts "What is your age?"
+      user_age = gets.chomp
+    puts "Where are you located?"
+      user_location = gets.chomp
+    select_favorite = prompt.yes?("Would you like to select your favorite Colorado resorts?")
+      if select_favorite
+        user_fav = prompt.multi_select("Select your favorite resorts?", resort_listing)
+      end
+    puts "Creating user profile"    #loading bar??
+      User.create username: desired_username, password_string: desired_password, age: user_age, location: user_location, favorite_resort: user_fav
+    puts "User profile created, time to shred the gnar ⛷ ⛷ ⛷"
+    pause
+    puts "❄️ ❄️ ❄️ Please sign into your new user profile ❄️ ❄️ ❄"
+    pause 
+    sign_in
+  end
+end
