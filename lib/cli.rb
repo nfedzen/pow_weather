@@ -62,7 +62,7 @@ class Cli
   end
 
   def list_resorts
-    selected_resort = prompt.select("Where are you shreddin' the gnar?", Resort.all.pluck(:name), per_page: 10 )          #get this to show more than 6 options in list?
+    selected_resort = prompt.select("Where are you shreddin' the gnar?", Resort.all.pluck(:name), per_page: 10 )          
   end
   
   def resort_listing 
@@ -96,10 +96,12 @@ class Cli
     puts "The #{days} day weather forecast for #{@resort_name} is:"
     puts "\n"
     weather["daily"][1..days].each do |day|
+
       puts "Day: #{dateTime("#{day["dt"]}")} 🗓"
-      puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F "    #should it be average temp??
+      puts "Temperature: #{day["temp"]["day"]}\xC2\xB0 F "    #should it be average temp??
       puts "Low: #{day["temp"]["min"]}\xC2\xB0 F 🔽" 
       puts "High: #{day["temp"]["max"]}\xC2\xB0 F 🔼"
+
       puts "Conditions: #{day["weather"][0]["main"]}"
       if day["weather"][0]["main"] == "Snow"
         puts "Amount of Fresh Pow: #{day["snow"]} in 🌨"
@@ -116,8 +118,10 @@ class Cli
     banner
     puts "Today's 12 hour weather forecast for #{@resort_name} is:"
     weather["hourly"][0..11].each do |hour|
+
       puts "Day: #{dateHour("#{hour["dt"]}")} 🗓"
-      puts "Average Temperature: #{hour["temp"]}\xC2\xB0 F" 
+      puts "Temperature: #{hour["temp"]}\xC2\xB0 F" 
+
       puts "Feels like: #{hour["feels_like"]}\xC2\xB0 F"
       puts "Conditions: #{hour["weather"][0]["main"]}"
       if hour["weather"][0]["main"] == "Snow"
@@ -190,12 +194,7 @@ class Cli
         user_fav = prompt.multi_select("Select your favorite resorts?", resort_listing)
       end
     puts "\n"
-
-    spinner = TTY::Spinner.new("[:spinner] Creating user profile ...", format: :spin_2)
-    spinner.auto_spin 
-    sleep(2) 
-    spinner.stop("Done!") 
-
+    user_creation_spinner
     puts "\n"
     User.create username: desired_username, password_string: desired_password, age: user_age, location: user_location, favorite_resort: user_fav
     puts "⛷  ⛷  ⛷  Time to shred the gnar ⛷  ⛷  ⛷"
@@ -206,6 +205,12 @@ class Cli
     sign_in
   end
 
+  def user_creation_spinner
+    spinner = TTY::Spinner.new("[:spinner] Creating user profile ...", format: :spin_2)
+    spinner.auto_spin 
+    sleep(2) 
+    spinner.stop("Done!") 
+  end
   
   def desired_username_search username 
     username_lookup = User.find_by(username: username)
