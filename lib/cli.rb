@@ -63,7 +63,7 @@ class Cli
   end
 
   def list_resorts
-    selected_resort = prompt.select("Where are you shreddin' the gnar?", Resort.all.pluck(:name))          #get this to show more than 6 options in list?
+    selected_resort = prompt.select("Where are you shreddin' the gnar?", Resort.all.pluck(:name), per_page: 10 )          #get this to show more than 6 options in list?
   end
   
   def resort_listing 
