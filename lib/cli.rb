@@ -4,8 +4,7 @@ require 'json'
 require 'date'
 require 'tty-spinner'
 
-#ef6b7de36c8aed58b9210b1226e7bc4d
-#api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
+
 ActiveRecord::Base.logger = nil
 
 class Cli  
@@ -79,11 +78,12 @@ class Cli
 
   def current_weather weather
     clear
+    banner
     puts "The current weather for #{@resort_name} is:"
     puts "\n"
     puts "Temperature: #{weather["current"]["temp"]}\xC2\xB0 F"
     puts "Conditions: #{weather["current"]["weather"][0]["main"]}"
-    puts "Wind Speed: #{weather["current"]["wind_speed"]} mph"
+    puts "Wind Speed: #{weather["current"]["wind_speed"]} mph 💨"
     puts "\n"
     pause
     welcome
@@ -92,18 +92,19 @@ class Cli
 
   def forecast days, weather
     clear
+    banner
     puts "The #{days} day weather forecast for #{@resort_name} is:"
     puts "\n"
     weather["daily"][1..days].each do |day|
-      puts "Day: #{dateTime("#{day["dt"]}")}"
-      puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F"    #should it be average temp??
-      puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
-      puts "High: #{day["temp"]["max"]}\xC2\xB0 F"
+      puts "Day: #{dateTime("#{day["dt"]}")} 🗓"
+      puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F "    #should it be average temp??
+      puts "Low: #{day["temp"]["min"]}\xC2\xB0 F 🔽" 
+      puts "High: #{day["temp"]["max"]}\xC2\xB0 F 🔼"
       puts "Conditions: #{day["weather"][0]["main"]}"
       if day["weather"][0]["main"] == "Snow"
-        puts "Amount of Fresh Pow: #{day["snow"]} in"
+        puts "Amount of Fresh Pow: #{day["snow"]} in 🌨"
       end
-      puts "Wind Speed: #{day["wind_speed"]} mph"
+      puts "Wind Speed: #{day["wind_speed"]} mph 💨"
       puts "\n"
     end
     pause
@@ -112,16 +113,17 @@ class Cli
 
   def hourly weather
     clear
+    banner
     puts "Today's 12 hour weather forecast for #{@resort_name} is:"
     weather["hourly"][0..11].each do |hour|
-      puts "Day: #{dateHour("#{hour["dt"]}")}"
+      puts "Day: #{dateHour("#{hour["dt"]}")} 🗓"
       puts "Average Temperature: #{hour["temp"]}\xC2\xB0 F" 
       puts "Feels like: #{hour["feels_like"]}\xC2\xB0 F"
       puts "Conditions: #{hour["weather"][0]["main"]}"
       if hour["weather"][0]["main"] == "Snow"
-        puts "Amount of Fresh Pow: #{hour["snow"]} in"
+        puts "Amount of Fresh Pow: #{hour["snow"]} in 🌨"
       end
-      puts "Wind Speed: #{hour["wind_speed"]} mph"
+      puts "Wind Speed: #{hour["wind_speed"]} mph 💨"
       puts "\n"
     end
     pause
@@ -132,12 +134,13 @@ class Cli
   def sign_in
     clear
     banner
+    mountain = prompt.decorate('🏔')
     puts "Wassup, welcome to Pow Weather!" 
     puts "Sign into the app"
     username = prompt.ask("What is your username?")
     user_lookup = User.find_by(username: username)
     if user_lookup 
-      password = prompt.mask("What is your password?") 
+      password = prompt.mask("What is your password?", mask: mountain) 
       checking_password username, password
     else
       puts "#{username} not found"
@@ -153,6 +156,7 @@ class Cli
 
 
   def checking_password username, password
+    mountain = prompt.decorate('🏔')
     pass_lookup = User.find_by(password_string: password)
     if pass_lookup
       puts "Congratulations, you logged in!" 
@@ -160,7 +164,7 @@ class Cli
     else
       puts "Incorrect Password, try again"
       pause
-      password = prompt.mask("What is your password?")
+      password = prompt.mask("What is your password?", mask: mountain)
       pass_lookup = User.find_by(password_string: password)
         if pass_lookup
           puts "Congratulations, you logged in!" 
@@ -175,9 +179,10 @@ class Cli
 
 
   def create_user_profile
+    mountain = prompt.decorate('🏔')
     desired_username = prompt.ask("What is your desired username?")
       desired_username_search desired_username 
-    desired_password = prompt.mask("Now lets create your password:")
+    desired_password = prompt.mask("Now lets create your password:", mask: mountain)
     user_age = prompt.ask("What is your age?")
     user_location = prompt.ask("Where are you located?")
     select_favorite = prompt.yes?("Would you like to select your favorite Colorado resorts?")
