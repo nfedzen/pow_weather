@@ -61,7 +61,7 @@ class Cli
   end
 
   def list_resorts
-    selected_resort = prompt.select("Where are you shreddin' the gnar?", Resort.all.pluck(:name))
+    selected_resort = prompt.select("Where are you shreddin' the gnar?", Resort.all.pluck(:name))          #get this to show more than 6 options in list?
   end
   
   def resort_listing 
@@ -128,108 +128,79 @@ class Cli
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
   def sign_in
     clear
     puts "Wassup, welcome to Pow Weather!" 
     puts "Sign into the app"
     username = prompt.ask("What is your username?")
-    password = prompt.mask("What is your password?") 
     user_lookup = User.find_by(username: username)
     if user_lookup 
-      
-        pass_lookup = User.find_by(password_string: password)
-          if pass_lookup
-            puts "Congratulations, you logged in!" 
-            puts "Welcome #{username}!"
-          else
-            puts "Incorrect Password, try again"
-            pause
-            password = prompt.mask("What is your password?")
-            pass_lookup = User.find_by(password_string: password)
-            if pass_lookup
-              puts "Congratulations, you logged in!" 
-            else 
-              puts "Incorrect Password, try signing in again"
-              pause
-              sign_in
-            end
-        end
+      password = prompt.mask("What is your password?") 
+      checking_password username, password
     else
       puts "#{username} not found"
-      new_user = prompt.yes?("Would you like to create a user profile?")
+      new_user = prompt.yes?("Would you like to create a new user profile?")
         if new_user
           create_user_profile
         else
-          puts "continue as guest"
+          puts "Continue as guest"
           pause
         end
     end
   end
 
+
+  def checking_password username, password
+    pass_lookup = User.find_by(password_string: password)
+    if pass_lookup
+      puts "Congratulations, you logged in!" 
+      puts "Welcome #{username}!"
+    else
+      puts "Incorrect Password, try again"
+      pause
+      password = prompt.mask("What is your password?")
+      pass_lookup = User.find_by(password_string: password)
+        if pass_lookup
+          puts "Congratulations, you logged in!" 
+          pause
+        else 
+          puts "Incorrect Password, try signing in again"
+          pause
+          sign_in
+        end
+    end
+  end  
+
+
   def create_user_profile
-    puts "What is your desired username?"
-      desired_username = gets.chomp
-      username_lookup = User.find_by(username: desired_username)
-      if username_lookup
-        puts "Sorry, that username is already taken, try again"
-          desired_username = gets.chomp
-          username_lookup = User.find_by(username: desired_username)
-      else
-        puts "Welcome #{desired_username}"
-      end
+    desired_username = prompt.ask("What is your desired username?")
+      desired_username_search desired_username 
     desired_password = prompt.mask("Now lets create your password:")
-    puts "What is your age?"
-      user_age = gets.chomp
-    puts "Where are you located?"
-      user_location = gets.chomp
+    user_age = prompt.ask("What is your age?")
+    user_location = prompt.ask("Where are you located?")
     select_favorite = prompt.yes?("Would you like to select your favorite Colorado resorts?")
       if select_favorite
         user_fav = prompt.multi_select("Select your favorite resorts?", resort_listing)
       end
     puts "Creating user profile"    #loading bar??
       User.create username: desired_username, password_string: desired_password, age: user_age, location: user_location, favorite_resort: user_fav
-    puts "User profile created, time to shred the gnar ⛷ ⛷ ⛷"
-    pause
-    puts "❄️ ❄️ ❄️ Please sign into your new user profile ❄️ ❄️ ❄"
+    puts "⛷ ⛷ ⛷ User profile created, time to shred the gnar ⛷ ⛷ ⛷"
+    puts "\n"
+    puts " Please sign into your new user profile "
+    puts "\n"
     pause 
     sign_in
   end
+
+
+  def desired_username_search username 
+    username_lookup = User.find_by(username: username)
+    if username_lookup
+      puts "Sorry, that username is already taken, try again"
+        username = prompt.ask("What is your desired username?")
+        username_lookup = User.find_by(username: username)
+    end
+  end
+
+  
 end
