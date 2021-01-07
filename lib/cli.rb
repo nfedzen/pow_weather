@@ -24,17 +24,24 @@ class Cli
 
   def dateTime epoch
     date_time = DateTime.strptime(epoch,'%s')
-    date_time.to_date
+    date_time.strftime "%m-%d-%Y"
+  end
+
+  def dateHour epoch
+    date_time = DateTime.strptime(epoch,'%s')
+    date_time.strftime "%m-%d-%Y %H:%M:%S"
   end
 
   def options resort_name
-    chosen_option = prompt.select("What do you want to see?", ["Current weather", "3 Day Forecast", "5 Day Forecast", "7 Day Forecast"])
+    chosen_option = prompt.select("What do you want to see?", ["Current weather", "Today's 12 Hour Forecast", "3 Day Forecast", "5 Day Forecast", "7 Day Forecast"])
     if chosen_option == "Current weather"
       current_weather @weather
     elsif chosen_option == "3 Day Forecast"
       forecast 3, @weather
     elsif chosen_option == "5 Day Forecast"
       forecast 5, @weather 
+    elsif chosen_option == "Today's 12 Hour Forecast"
+      hourly @weather
     else  
       forecast 7, @weather 
     end
@@ -84,6 +91,7 @@ class Cli
   def forecast days, weather
     clear
     puts "The #{days} day weather forecast for #{@resort_name} is:"
+    puts "\n"
     weather["daily"][1..days].each do |day|
       puts "Day: #{dateTime("#{day["dt"]}")}"
       puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
@@ -94,6 +102,24 @@ class Cli
         puts "Amount of Fresh Pow: #{day["snow"]} in"
       end
       puts "Wind Speed: #{day["wind_speed"]} mph"
+      puts "\n"
+    end
+    pause
+    welcome
+  end
+
+  def hourly weather
+    clear
+    puts "Today's 12 hour weather forecast for #{@resort_name} is:"
+    weather["hourly"][0..11].each do |hour|
+      puts "Day: #{dateHour("#{hour["dt"]}")}"
+      puts "Average Temperature: #{hour["temp"]}\xC2\xB0 F" 
+      puts "Feels like: #{hour["feels_like"]}"
+      puts "Conditions: #{hour["weather"][0]["main"]}"
+      if hour["weather"][0]["main"] == "Snow"
+        puts "Amount of Fresh Pow: #{hour["snow"]} in"
+      end
+      puts "Wind Speed: #{hour["wind_speed"]} mph"
       puts "\n"
     end
     pause
