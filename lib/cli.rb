@@ -49,6 +49,7 @@ class Cli
 
   def welcome
     clear
+    banner
     puts "Wassup, welcome to Pow Weather!" 
       ask = prompt.yes?("Wanna check the pow?")
       if ask
@@ -126,10 +127,10 @@ class Cli
     welcome
   end
 
-
-
+  
   def sign_in
     clear
+    banner
     puts "Wassup, welcome to Pow Weather!" 
     puts "Sign into the app"
     username = prompt.ask("What is your username?")
@@ -192,7 +193,7 @@ class Cli
     sign_in
   end
 
-
+  
   def desired_username_search username 
     username_lookup = User.find_by(username: username)
     if username_lookup
@@ -203,4 +204,27 @@ class Cli
   end
 
   
+ 
+  def banner
+    box = TTY::Box.frame(width: 150, height: 18, border: :thick, align: :center) do
+        "
+              :                                                                                                               
+             t#,                                                    ,;                                           ,;           
+ t          ;##W.                                                 f#i                        .    .            f#i j.         
+ ED.       :#L:WE             ;                     ;           .E#t             .. GEEEEEEELDi   Dt         .E#t  EW,        
+ E#K:     .KG  ,#D          .DL                   .DL          i#W,             ;W, ,;;L#K;;.E#i  E#i       i#W,   E##j       
+ E##W;    EE    ;#f f.     :K#L     LWL   f.     :K#L     LWL L#D.             j##,    t#E   E#t  E#t      L#D.    E###D.     
+ E#E##t  f#.     t#iEW:   ;W##L   .E#f    EW:   ;W##L   .E#f:K#Wfff;          G###,    t#E   E#t  E#t    :K#Wfff;  E#jG#W;    
+ E#ti##f :#G     GK E#t  t#KE#L  ,W#;     E#t  t#KE#L  ,W#; i##WLLLLt       :E####,    t#E   E########f. i##WLLLLt E#t t##f   
+ E#t ;##D.;#L   LW. E#t f#D.L#L t#K:      E#t f#D.L#L t#K:   .E#L          ;W#DG##,    t#E   E#j..K#j...  .E#L     E#t  :K#E: 
+ E#ELLE##K:t#f f#:  E#jG#f  L#LL#G        E#jG#f  L#LL#G       f#E:       j###DW##,    t#E   E#t  E#t       f#E:   E#KDDDD###i
+ E#L;;;;;;, f#D#;   E###;   L###j         E###;   L###j         ,WW;     G##i,,G##,    t#E   E#t  E#t        ,WW;  E#f,t#Wi,,,
+ E#t         G#t    E#K:    L#W;          E#K:    L#W;           .D#;  :K#K:   L##,    t#E   f#t  f#t         .D#; E#t  ;#W:  
+ E#t          t     EG      LE.           EG      LE.              tt ;##D.    L##,     fE    ii   ii           tt DWi   ,KK: 
+                    ;       ;@            ;       ;@                  ,,,      .,,       :                                    
+        
+  "end
+      print box
+      puts "\n"
+  end
 end
