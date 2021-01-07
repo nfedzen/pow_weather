@@ -10,7 +10,7 @@ ActiveRecord::Base.logger = nil
 class Cli  
 
   def prompt
-    TTY::Prompt.new
+    TTY::Prompt.new(symbols: {marker: '🏂'})
   end
 
   def pause
