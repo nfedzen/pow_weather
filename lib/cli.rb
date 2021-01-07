@@ -2,6 +2,7 @@ require 'tty-prompt'
 require 'rest-client'
 require 'json'
 require 'date'
+require 'tty-spinner'
 
 #ef6b7de36c8aed58b9210b1226e7bc4d
 #api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
@@ -95,7 +96,7 @@ class Cli
     puts "\n"
     weather["daily"][1..days].each do |day|
       puts "Day: #{dateTime("#{day["dt"]}")}"
-      puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F" 
+      puts "Average Temperature: #{day["temp"]["day"]}\xC2\xB0 F"    #should it be average temp??
       puts "Low: #{day["temp"]["min"]}\xC2\xB0 F" 
       puts "High: #{day["temp"]["max"]}\xC2\xB0 F"
       puts "Conditions: #{day["weather"][0]["main"]}"
@@ -115,7 +116,7 @@ class Cli
     weather["hourly"][0..11].each do |hour|
       puts "Day: #{dateHour("#{hour["dt"]}")}"
       puts "Average Temperature: #{hour["temp"]}\xC2\xB0 F" 
-      puts "Feels like: #{hour["feels_like"]}"
+      puts "Feels like: #{hour["feels_like"]}\xC2\xB0 F"
       puts "Conditions: #{hour["weather"][0]["main"]}"
       if hour["weather"][0]["main"] == "Snow"
         puts "Amount of Fresh Pow: #{hour["snow"]} in"
@@ -183,9 +184,16 @@ class Cli
       if select_favorite
         user_fav = prompt.multi_select("Select your favorite resorts?", resort_listing)
       end
-    puts "Creating user profile"    #loading bar??
-      User.create username: desired_username, password_string: desired_password, age: user_age, location: user_location, favorite_resort: user_fav
-    puts "⛷ ⛷ ⛷ User profile created, time to shred the gnar ⛷ ⛷ ⛷"
+    puts "\n"
+
+    spinner = TTY::Spinner.new("[:spinner] Creating user profile ...", format: :spin_2)
+    spinner.auto_spin 
+    sleep(2) 
+    spinner.stop("Done!") 
+
+    puts "\n"
+    User.create username: desired_username, password_string: desired_password, age: user_age, location: user_location, favorite_resort: user_fav
+    puts "⛷  ⛷  ⛷  Time to shred the gnar ⛷  ⛷  ⛷"
     puts "\n"
     puts " Please sign into your new user profile "
     puts "\n"
