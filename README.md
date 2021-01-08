@@ -1,5 +1,5 @@
 # Pow Weather
-> Your best ski resort weather checker!
+> Your best ski resort weather report!
 
 ## Table of contents
 * [General info](#general-info)
@@ -11,7 +11,7 @@
 
 ## General info
 Pow Weather is a CLI application for checking the weather and pow for your favorite Colorado Ski Resorts! Get up-to-date weather information for 22 ski resorts in CO
-so you can and your friends can get shreddy with that fresh butter.
+so you and your friends can get shreddy with that fresh butter.
 
 ## Intro Video
 
@@ -29,7 +29,10 @@ so you can and your friends can get shreddy with that fresh butter.
 
 
 ## Setup
-Get ready, to get shreddy. Run this app by cloning the repository from GitHud and running the command:
+Get ready, to get shreddy. Run this app by cloning the repository from GitHub and running the following commands:
+```ruby
+bundle install
+```
 ```ruby
 ruby runner.rb
 ```
