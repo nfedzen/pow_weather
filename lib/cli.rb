@@ -98,7 +98,7 @@ class Cli
     weather["daily"][1..days].each do |day|
 
       puts "Day: #{dateTime("#{day["dt"]}")} 🗓"
-      puts "Temperature: #{day["temp"]["day"]}\xC2\xB0 F "    #should it be average temp??
+      puts "Temperature: #{day["temp"]["day"]}\xC2\xB0 F "    
       puts "Low: #{day["temp"]["min"]}\xC2\xB0 F 🔽" 
       puts "High: #{day["temp"]["max"]}\xC2\xB0 F 🔼"
 
