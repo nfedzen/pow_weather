@@ -14,7 +14,7 @@ Pow Weather is a CLI application for checking the weather and pow for your favor
 so you and your friends can get shreddy with that fresh butter.
 
 ## Intro Video
-
+[Pow Weather on YouTube](https://youtu.be/9y9g1tRn49Y)
 
 ## Technologies
 * Ruby 
